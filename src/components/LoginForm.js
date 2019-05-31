@@ -17,9 +17,8 @@ class LoginForm extends Component{
 
     submitHandler = e => {
         e.preventDefault()
-        console.log(this.state);
         axios
-        .post('https://jsonplaceholder.typicode.com/posts', this.state)
+        .post('http://localhost:3001/api/login', this.state)
         .then(response => {
             console.log(response);
         })
