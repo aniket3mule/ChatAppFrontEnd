@@ -18,7 +18,7 @@ class LoginForm extends Component{
     submitHandler = e => {
         e.preventDefault()
         axios
-        .post('http://localhost:3001/api/login', this.state)
+        .post('http://localhost:3001/login', this.state)
         .then(response => {
             console.log(response);
         })
