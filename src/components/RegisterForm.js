@@ -24,6 +24,9 @@ submitHandler = e => {
     .post('http://localhost:3001/register', this.state)
     .then(response => {
         console.log(response);
+        //toast("registered Successfully")
+        console.log(response)
+        window.location.href='http://localhost:3000/login'
     })
     .catch(error => {
         console.log(error);
@@ -31,7 +34,7 @@ submitHandler = e => {
 }
 
 render(){
-    const { fname, lname, mobile, email, password, cpsw} = this.state
+    const { fname, lname, email, password, cpsw} = this.state
         return(
             <div>
             <form className="form-horizontal" onSubmit = {this.submitHandler}>
@@ -55,18 +58,6 @@ render(){
                     name="lname"
                     placeholder="Enter last name"
                     value ={lname} 
-                    onChange={this.changeHandler}
-                    required/>
-                </div>
-                </div>
-                <div className="form-group">
-                <label className="control-label col-sm-2"><b>Mobile Number:</b></label>
-                <div className="col-sm-5">          
-                    <input type="text"
-                    className="form-control"
-                    name="mobile" 
-                    placeholder="Enter mobile number" 
-                    value ={mobile} 
                     onChange={this.changeHandler}
                     required/>
                 </div>
@@ -116,6 +107,7 @@ render(){
             </form>
             </div>
             
+
         );
     }
 }
