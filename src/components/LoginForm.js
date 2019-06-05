@@ -15,10 +15,10 @@ class LoginForm extends Component{
         this.setState({[e.target.name]: e.target.value})
     }
 
-    submitHandler = e => {
+    submitHandler = (e, token) => {
         e.preventDefault()
         axios
-        .post('http://localhost:3001/login', this.state)
+        .post(`http://localhost:3001/login?${token}`, this.state)
         .then(response => {
             console.log(response);
         })

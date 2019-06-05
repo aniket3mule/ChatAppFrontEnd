@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css';
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgetPassword from './pages/Forget'
 
 
 class App extends Component{
@@ -12,8 +13,11 @@ class App extends Component{
       <div>
         
       <Router>
+       {/* <Route use strict path="" component={Login}/> */}
        <Route path="/login" component={Login}/>
        <Route path="/register" component={Register}/>
+       <Route path="/forgetpassword" component={ForgetPassword}/>
+
       </Router>
       </div>
         

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import axios from 'axios'
-
+import { withRouter } from 'react-router-dom'
+import userRegister from '../services/userService'
 class RegisterForm extends Component{constructor(props){
     super(props)
 
@@ -19,18 +19,20 @@ changeHandler = e => {
 }
 
 submitHandler = e => {
-    e.preventDefault()
-    axios
-    .post('http://localhost:3001/register', this.state)
-    .then(response => {
-        console.log(response);
-        //toast("registered Successfully")
-        console.log(response)
-        window.location.href='http://localhost:3000/login'
-    })
-    .catch(error => {
-        console.log(error);
-    })
+    e.preventDefault();
+    var data={
+        'fname':this.state.fname,
+        'lname':this.state.lname,
+        'email':this.state.email,
+        'password':this.state.password,
+        'cpsw' : this.state.cpsw
+    }
+    userRegister(data);
+   
+}
+loginclick = e => {
+    e.preventDefault();
+    this.props.history.push('/login')
 }
 
 render(){
@@ -101,9 +103,14 @@ render(){
                 <div className="form-group">        
                 <div className="col-sm-offset-10 col-sm-5">
                     <button type="submit"
-                    className="btn btn-md btn-success btn-block text-uppercase">Register</button>
+                    className="btn btn-md btn-success btn-block text-uppercase" onClick = {this.submitHandler}>Register</button>
                 </div>
                 </div>
+                <div className="col-sm-offset-10 col-sm-5">
+                    <button type="submit" className="btn btn-md btn-success btn-block text-uppercase"
+                    onClick = {this.loginclick}>Sign In Instead</button>
+                </div>
+              
             </form>
             </div>
             
@@ -112,4 +119,4 @@ render(){
     }
 }
 
-export default RegisterForm;
+export default withRouter(RegisterForm);
