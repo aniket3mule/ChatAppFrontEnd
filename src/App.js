@@ -5,6 +5,8 @@ import './App.css';
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgetPassword from './pages/Forget'
+import ResetPassword from './pages/resetpassword';
+import Dashboard from './components/Dashboard';
 
 
 class App extends Component{
@@ -17,6 +19,9 @@ class App extends Component{
        <Route path="/login" component={Login}/>
        <Route path="/register" component={Register}/>
        <Route path="/forgetpassword" component={ForgetPassword}/>
+       <Route path="/resetpassword" component={ResetPassword}/>
+       <Route path= "/dashboard" component={Dashboard}/>
+
 
       </Router>
       </div>

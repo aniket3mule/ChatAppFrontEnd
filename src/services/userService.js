@@ -6,7 +6,7 @@ function userRegister(data){
         console.log(response);
         //toast("registered Successfully")
         //console.log(response)
-        window.location.href='login'
+        //window.location.href='login'
     })
     .catch(error => {
         console.log(error);

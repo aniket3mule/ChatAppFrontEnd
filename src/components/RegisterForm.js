@@ -28,13 +28,11 @@ submitHandler = e => {
         'cpsw' : this.state.cpsw
     }
     userRegister(data);
-   
 }
 loginclick = e => {
     e.preventDefault();
     this.props.history.push('/login')
 }
-
 render(){
     const { fname, lname, email, password, cpsw} = this.state
         return(
@@ -107,14 +105,11 @@ render(){
                 </div>
                 </div>
                 <div className="col-sm-offset-10 col-sm-5">
-                    <button type="submit" className="btn btn-md btn-success btn-block text-uppercase"
+                    <button type="submit" className="btn btn-md btn-info btn-block text-uppercase"
                     onClick = {this.loginclick}>Sign In Instead</button>
                 </div>
-              
             </form>
             </div>
-            
-
         );
     }
 }

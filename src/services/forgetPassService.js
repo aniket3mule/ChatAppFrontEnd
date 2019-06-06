@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-function forgetPass(data){
+function forgetPassService(data){
     console.log('service : 4 ',data);
     
     axios.post('forgetpassword', data)
@@ -13,4 +13,4 @@ function forgetPass(data){
 
 }
 
-export default forgetPass;
+export default forgetPassService;

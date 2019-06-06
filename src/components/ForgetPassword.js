@@ -9,7 +9,7 @@ class ForgetPassword extends Component{constructor(props){
   }
 }
 changeHandler = e => {
-    this.setState = ({email: e.target.value })
+    this.setState({[e.target.name]: e.target.value })
 }
 submitHandler = e => {
     e.preventDefault();
@@ -36,7 +36,7 @@ submitHandler = e => {
                 </FormGroup>
                 <FormGroup>
                         <Col sm={{ size: 10, offset: 2 }}>
-                        <Button onClick = {this.submitHandler}>Submit</Button>
+                        <Button onClick={this.submitHandler}>Submit</Button>
                         </Col>
                 </FormGroup>
             </Form>
