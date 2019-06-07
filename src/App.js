@@ -6,7 +6,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgetPassword from './pages/Forget'
 import ResetPassword from './pages/resetpassword';
-import Dashboard from './components/Dashboard';
+import DashboardPage from './pages/Dashboard';
 
 
 class App extends Component{
@@ -20,7 +20,7 @@ class App extends Component{
        <Route path="/register" component={Register}/>
        <Route path="/forgetpassword" component={ForgetPassword}/>
        <Route path="/resetpassword" component={ResetPassword}/>
-       <Route path= "/dashboard" component={Dashboard}/>
+       <Route path= "/dashboard" component={DashboardPage}/>
 
 
       </Router>

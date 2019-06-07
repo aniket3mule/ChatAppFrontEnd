@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import resetPasswordService from '../services/resetPasswordService'
+import Services from '../services/Services';
+const resetPasswordService = new Services().resetPasswordService;
 
 class ResetPassword extends Component{constructor(props){
   super(props);

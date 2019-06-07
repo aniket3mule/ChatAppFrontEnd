@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom'
-import userRegister from '../services/userService'
+import Services from '../services/Services';
+
+const userRegister = new Services().userRegister;
+
 class RegisterForm extends Component{constructor(props){
     super(props)
 
@@ -101,7 +104,8 @@ render(){
                 <div className="form-group">        
                 <div className="col-sm-offset-10 col-sm-5">
                     <button type="submit"
-                    className="btn btn-md btn-success btn-block text-uppercase" onClick = {this.submitHandler}>Register</button>
+                    className="btn btn-md btn-success btn-block text-uppercase" 
+                    onClick = {this.submitHandler}>Register</button>
                 </div>
                 </div>
                 <div className="col-sm-offset-10 col-sm-5">

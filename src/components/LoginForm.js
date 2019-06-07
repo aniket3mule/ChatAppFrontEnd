@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import axios from 'axios'
+
+import Services from '../services/Services';
+const loginService = new Services().loginService;
 
 class LoginForm extends Component{
     constructor(props){
@@ -15,23 +17,20 @@ class LoginForm extends Component{
         this.setState({[e.target.name]: e.target.value})
     }
 
-    submitHandler = (e, token) => {
+    submitHandler = (e) => {
         e.preventDefault()
-        axios
-        .post(`http://localhost:3001/login?${token}`, this.state)
-        .then(response => {
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        var data = {
+            'email' : this.state.email,
+            'password' : this.state.password
+        }
+        loginService(data)
     }
 
     render(){
         const { email, password} = this.state
         return(
             <div>
-                <form className="form-horizontal" onSubmit = {this.submitHandler}>
+                <form className="form-horizontal" >
                     <div className="form-group">
                     <label className="control-label col-sm-2"><b>Email:</b></label>
                     <div className="col-sm-5">
@@ -56,7 +55,9 @@ class LoginForm extends Component{
                     </div>
                     <div className="form-group">        
                     <div className="col-sm-offset-10 col-sm-5">
-                        <button type="submit" className="btn btn-md btn-success btn-block text-uppercase">Login</button>
+                        <button type="submit" 
+                        className="btn btn-md btn-success btn-block text-uppercase"
+                        onClick = {this.submitHandler}>Login</button>
                     </div>
                     </div>
                 </form>

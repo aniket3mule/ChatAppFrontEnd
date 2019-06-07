@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import forgetPass from '../services/forgetPassService'
+import Services from '../services/Services';
+
+const forgetPass = new Services().forgetPassService;
 
 class ForgetPassword extends Component{constructor(props){
   super(props);
