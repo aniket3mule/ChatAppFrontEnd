@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import ChatServices from '../services/ChatServices'
 import { Input, Button, Label, Container, Row, Col, ListGroup, ListGroupItem } from 'reactstrap'
+import { withRouter } from 'react-router-dom'
 import clientio from 'socket.io-client'
-const addMessage = new ChatServices().addMessage;
 
+const socket = clientio.connect('http://localhost:4000')
 
 class Dashboard extends Component {
   constructor(props) {
@@ -13,39 +13,55 @@ class Dashboard extends Component {
     this.state = {
       'message': '',
       'listofusers': [],
-      'allMessages' : [],
-      'receiver' : ''
+      'allMessages': [],
+      'receiver': '',
+      'sender': ''
     }
   }
 
-  changeHandler = (e => {
-    this.setState = { [e.target.name]: e.target.value }
-    console.log(this.state.message);
-  })
-  
-  submitHandler = (e =>{
+  changeHandler = (e) => {
+    this.setState({ message: e.target.value })
+    // console.log(this.state.message);
+  }
+
+  submitHandler = (e => {
     e.preventDefault();
-    var data ={
-      'message' : this.state.message
+    var sender = localStorage.getItem('sender');
+    var receiver = localStorage.getItem('receiver');
+    var message = this.state.message;
+
+    var data = {
+      'senderID': sender,
+      'receiverID': receiver,
+      'message': message
     }
-    addMessage(data);
+    socket.emit('newMessage', data);
   })
 
-  handleClick =(e =>{
-    this.setState = {[e.target.receiver]: e.target.value}
-    console.log('receiver : ',this.state.receiver);
-    
+  logout = (e => {
+    localStorage.clear();
+    this.props.history.push('/login');
   })
+
+  handleClick = (key, e) => {
+    e.preventDefault();
+    this.setState({ sender: localStorage.getItem('sender') })
+    //console.log('sender : ', this.state.sender);
+    var Receiver = key.email;
+    localStorage.setItem('receiver', Receiver)
+    this.setState({ receiver: Receiver })
+    //console.log('receiver : ', this.state.receiver);
+  }
 
   componentDidMount() {
     console.log('Component mounted');
     axios
-      .get('http://localhost:3001/listofuser')
+      .get('http://localhost:4000/listofuser')
       .then(response => {
         this.setState({
           listofusers: response.data.message
         })
-        console.log(this.state.listofusers)
+        //console.log(this.state.listofusers)
       })
       .catch(err => {
         console.log(err);
@@ -54,13 +70,12 @@ class Dashboard extends Component {
 
   render() {
     var { message } = this.state.message;
-    var { receiver } = this.state.receiver;
     var userList = this.state.listofusers.map(key => {
-      if (key.email !== localStorage.getItem('userEmail')) {
+      if (key.email !== localStorage.getItem('sender')) {
         return (
           <div>
             <ListGroup>
-              <ListGroupItem name='receiver' value={receiver} tag="button" onClick={(e) => this.handleClick(key, e)}>
+              <ListGroupItem tag="button" onClick={(e) => this.handleClick(key, e)}>
                 {key.fname} {key.lname}
               </ListGroupItem>
             </ListGroup>
@@ -78,7 +93,7 @@ class Dashboard extends Component {
           <Col sm="4" md={{ size: 6, offset: -1 }} className="chat-border">
             <Label><h3>Chat Room</h3></Label>
           </Col>
-          <Button color="danger" size="lg">Logout</Button>
+          <Button color="danger" size="lg" onClick={this.logout}>Logout</Button>
         </Row>
         <Row className="chat-row">
           <Col sm="2" md={{ size: 3, offset: -1 }} className="chat-border">
@@ -88,7 +103,7 @@ class Dashboard extends Component {
             {userList}
           </Col>
           <Col sm="4" md={{ size: 6, offset: -1 }} className="chat-border">
-            <div><Label>Username :</Label></div>
+            <div><Label>Username : {localStorage.getItem('receiver')}</Label></div>
             <div className="input-chat-div">
               <Input
                 type="text"
@@ -105,4 +120,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);

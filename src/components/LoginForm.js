@@ -24,11 +24,11 @@ class LoginForm extends Component {
         }
         loginService(data)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 localStorage.setItem('firstName', response.data.message.fname);
                 localStorage.setItem('lastName', response.data.message.lname);
                 localStorage.setItem('userId', response.data.message.id);
-                localStorage.setItem('userEmail', response.data.message.email);
+                localStorage.setItem('sender', response.data.message.email);
                 localStorage.setItem('userToken', response.data.message.token);
                 this.props.history.push('/dashboard');
             })
