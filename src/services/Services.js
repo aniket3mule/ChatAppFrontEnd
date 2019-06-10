@@ -3,19 +3,11 @@ import axios from 'axios'
 class Services {
 
     loginService (data){
-        axios
-            .post(`login`, data)
-            .then(response => {
-                console.log(response.data.message.status);
-                window.location.href('localhost:3000/dashboard')
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        return axios.post(`login`, data)
     }
+
     forgetPassService(data){
         console.log('service : 4 ',data);
-        
         axios.post('forgetpassword', data)
         .then(response => {
             console.log(response);
@@ -23,7 +15,6 @@ class Services {
         .catch(err =>{
             console.log(err);
         })
-    
     }
     
     resetPasswordService(data, token){
@@ -52,9 +43,6 @@ class Services {
             console.log(error);
         })
     }
-
-
-
 }
 
 
