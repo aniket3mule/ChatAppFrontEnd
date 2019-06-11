@@ -1,14 +1,13 @@
-// import axios from "axios";
+import axios from "axios";
 
-// class ChatServices{
-//     addMessage(data){
-//         var messageArray =[];
-//         socket.on('seneMessage',response )
-//             // console.log("response", response);
-//             // console.log("response.data", response.data);
-//             // console.log("response.data.result", response.data.result);
-//             // console.log("response", response);
-//     }
-// }
+class ChatServices{
+    listOfUsers(){
+        return axios.get('http://localhost:4000/listofuser')
+    }
 
-// export default ChatServices;
+    allChats(){
+        return axios.get('http://localhost:4000/getAllChats')
+    }
+}
+
+export default ChatServices;
