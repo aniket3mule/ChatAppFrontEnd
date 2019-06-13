@@ -1,33 +1,36 @@
 import React, { Component } from 'react';
+import {Alert} from 'reactstrap';
 export default class MessageDisplay extends Component {
 
     render() {
         return (
             this.props.allMessages.map((key) =>
                 <div>
-                    {key.receiverID === localStorage.getItem("Sender") ?
-                        (
-                            key.senderID === this.props.receiverId ?
-                                <div className="senderDiv">
-                                    <div>{key.message} </div>
-                                </div>
-                                : (
-                                    null
-                                )
-                        ) : (
-                            null
-                        )}
-                    {
-                        key.receiverID === this.props.receiverId ?
+                    <div className='receiver-message'>
+                        {key.senderID === localStorage.getItem("receiver") ?
                             (
-                                <div className="receiverDiv">
-                                    <div>{key.message}</div>
-                                </div>
+                                key.receiverID === localStorage.getItem('sender') ?
 
+                                    <div><Alert color='info'>{localStorage.getItem('receiverName')}: {key.message} </Alert></div>
+
+                                    : (
+                                        null
+                                    )
                             ) : (
                                 null
-                            )
-                    }
+                            )}
+                    </div>
+                    <div className='sender-message'>
+                        {
+                            key.receiverID === localStorage.getItem('receiver') ?
+                                (
+                                    <div><Alert color='success'>{localStorage.getItem('firstName')}: {key.message}</Alert></div>
+
+                                ) : (
+                                    null
+                                )
+                        }
+                    </div>
                 </div>
             )
         )

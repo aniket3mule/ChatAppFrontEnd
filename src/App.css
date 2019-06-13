@@ -3,12 +3,13 @@
     margin-top: 40px;
 }
 .input-chat-div{
-  margin-top: 555px;
+  display: flex;
+  margin-top: 50%;
   margin-right: 65px;
 }
 .button-chat-div{
     display: flex;
-    margin-top: 587px;
+    margin-top: 50%;
     margin-left: -85px;
 }
 .chat-header{
@@ -20,4 +21,16 @@
 
 .chat-border{
   border: 1px solid black
+}
+
+.receiver-message{
+  padding-right: 280px;
+}
+
+.sender-message{
+  padding-left: 280px;
+  
+}
+.send-message{
+  padding-left: 280px;
 }

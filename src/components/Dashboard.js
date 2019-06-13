@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { Input, Button, Label, Container, Row, Col, ListGroup, ListGroupItem } from 'reactstrap'
+import { Input, Button, Label, Container, Row, Col, Alert } from 'reactstrap'
 import { withRouter } from 'react-router-dom'
 import clientio from 'socket.io-client'
 import Services from '../services/ChatServices';
 import MessageDisplay from '../components/MessageDisplay'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'
+// import { ToastContainer, toast } from 'react-toastify';
 
 const userList = new Services().listOfUsers;
 const allChats = new Services().allChats;
@@ -20,7 +23,8 @@ class Dashboard extends Component {
       'receiver': '',
       'sender': '',
       'messageDisplay': [],
-      'msg' : []
+      'msg': [],
+      'receiverMsg': []
 
     }
   }
@@ -31,34 +35,39 @@ class Dashboard extends Component {
   }
 
   submitHandler = (e => {
-    e.preventDefault();
-    var sender = localStorage.getItem('sender');
-    var receiver = localStorage.getItem('receiver');
-    var message = this.state.message;
+    if (!this.state.message) {
+      toast.info("Message can not be empty", {
+        position: toast.POSITION.TOP_CENTER
+      });
+    } else {
+      var sender = localStorage.getItem('sender');
+      var receiver = localStorage.getItem('receiver');
+      var message = this.state.message;
 
-    var data = {
-      'senderID': sender,
-      'receiverID': receiver,
-      'newMessage': message
+      var data = {
+        'senderID': sender,
+        'receiverID': receiver,
+        'newMessage': message
+      }
+      socket.emit('newMessage', data);
+
+      this.setState({
+        message: '',
+      });
+      this.setState({ messageDisplay: this.state.message });
     }
-    socket.emit('newMessage', data);
-
-    this.setState({
-      message: '',
-      anchorEl: null
-    });
-    this.setState({ messageDisplay: this.state.message });
-    this.submitHandler = this.submitHandler.bind(this);
   })
 
-  logout = (e => {
+  logout = (() => {
     localStorage.clear();
     this.props.history.push('/login');
+
   })
 
   handleClick = (key, e) => {
     e.preventDefault();
     this.setState({ sender: localStorage.getItem('sender') })
+    localStorage.setItem('receiverName', key.fname)
     //console.log('sender : ', this.state.sender);
     var Receiver = key.email;
     localStorage.setItem('receiver', Receiver)
@@ -91,48 +100,52 @@ class Dashboard extends Component {
         console.log('error : ', err);
       })
 
-      const Sender = localStorage.getItem('sender')
-                socket.on(Sender, (result) => {
-                    const msg = this.state.msg;
-                    msg.push(result)
-                    this.setState({ msg: msg });
-                    console.log(result);
-                    console.log("msg==", this.state.msg)
-                })
+    // const Sender = localStorage.getItem('sender')
+    socket.on('sendMessage', (result) => {
+      //const msg = this.state.msg;
+      this.state.allMessages.push(result);
+      this.setState({ msg: this.state.msg });
+      console.log(result);
+      console.log("msg==", this.state.msg)
+    })
+    
+    // socket.on('Sender', (result) => {
+    //   //const msg = this.state.msg;
+    //   this.state.msg.push(result)
+    //   this.setState({ msg: this.state.msg });
+    //   console.log(result);
+    //   console.log("msg==", this.state.msg)
+    // })
+  
   }
-
   render() {
     var { message } = this.state.message;
-    var userList = this.state.listofusers.map(key => {
+    var userList = this.state.listofusers.map((key, i) => {
       if (key.email !== localStorage.getItem('sender')) {
         return (
           <div>
-            <ListGroup>
-              <ListGroupItem tag="button" onClick={(e) => this.handleClick(key, e)}>
-                {key.fname} {key.lname}
-              </ListGroupItem>
-            </ListGroup>
+            <Alert color='warning' newkey={i} tag="button" onClick={(e) => this.handleClick(key, e)}>{key.fname} {key.lname}
+            </Alert>
           </div>
         )
       }
       return userList;
     })
 
-    var msg = this.state.msg.map(key =>{
+    var msg = this.state.msg.map((key) => {
       if (key.receiverID === localStorage.getItem('receiver')) {
-      return(
-        <div>
-          <ListGroup>
-            <ListGroupItem>
-              {localStorage.getItem('firstName')}: {key.message} 
-            </ListGroupItem>
-          </ListGroup>
-        </div>
-      )
+        return (
+          <div>
+            <Alert>
+              {localStorage.getItem('firstName')}: ({key.message})
+            </Alert>
+          </div>
+        )
       }
       return msg;
     })
-    
+
+
     return (
       <Container>
         <Row className="chat-header">
@@ -153,9 +166,13 @@ class Dashboard extends Component {
             {userList}
           </Col>
           <Col sm="4" md={{ size: 6, offset: -1 }} className="chat-border">
-            <div><Label>{msg}</Label></div>
+
+<div><h4>{localStorage.getItem('receiverName')}</h4></div>
             <div>
-            {<MessageDisplay allMessages={this.state.allMessages}  />}
+              <Label>{<MessageDisplay allMessages={this.state.allMessages} />}</Label>
+
+              {/* <div >{receiverMsg}</div> */}
+              <div className='send-message'>{msg}</div>
             </div>
             <div className="input-chat-div">
               <Input
@@ -164,8 +181,9 @@ class Dashboard extends Component {
                 placeholder="Type message here......."
                 value={message}
                 onChange={this.changeHandler} />
-            <Button outline color="success" onClick={this.submitHandler}>Send</Button></div></Col>
+              <Button outline color="success" onClick={this.submitHandler}>Send</Button></div></Col>
         </Row>
+        <ToastContainer />
       </Container>
     )
   }

@@ -7,6 +7,9 @@ import Register from './pages/Register'
 import ForgetPassword from './pages/Forget'
 import ResetPassword from './pages/resetpassword';
 import DashboardPage from './pages/Dashboard';
+import Home from './pages/Home';
+ 
+
 
 class App extends Component {
   render() {
@@ -14,6 +17,7 @@ class App extends Component {
       <div>
         <Router>
           {/* <Route use strict path="" component={Login}/> */}
+          <Route path="/" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/forgetpassword" component={ForgetPassword} />

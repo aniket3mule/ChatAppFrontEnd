@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import Services from '../services/Services';
+import Services from '../services/UserServices';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'
 const loginService = new Services().loginService;
 
 class LoginForm extends Component {
@@ -18,13 +20,25 @@ class LoginForm extends Component {
 
     submitHandler = (e) => {
         e.preventDefault()
+        if (!this.state.email) {
+            toast.error("email can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else if (!this.state.password) {
+            toast.error("password can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+
+
         var data = {
             'email': this.state.email,
             'password': this.state.password
         }
         loginService(data)
             .then(response => {
-                //console.log(response);
+                console.log(response);
                 localStorage.setItem('firstName', response.data.message.fname);
                 localStorage.setItem('lastName', response.data.message.lname);
                 localStorage.setItem('userId', response.data.message.id);
@@ -34,6 +48,9 @@ class LoginForm extends Component {
             })
             .catch(error => {
                 console.log(error);
+                toast.error("Invalid username or Password", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             })
     }
 
@@ -68,10 +85,11 @@ class LoginForm extends Component {
                         <div className="col-sm-offset-10 col-sm-6">
                             <button type="submit"
                                 className="btn btn-md btn-success btn-block text-uppercase"
-                                onClick={this.submitHandler}>Login</button>
+                                onClick={this.submitHandler} >Login</button>
                         </div>
                     </div>
                 </form>
+                <ToastContainer />
             </div>
         );
     }

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import Services from '../services/Services';
+import Services from '../services/UserServices';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'
 const resetPasswordService = new Services().resetPasswordService;
+
 
 class ResetPassword extends Component {
     constructor(props) {
@@ -16,15 +19,32 @@ class ResetPassword extends Component {
     }
     submitHandler = e => {
         e.preventDefault();
-        var data = {
-            'password': this.state.password,
-            'confirmPassword': this.state.confirmPassword
+        if (!this.state.password) {
+            toast.error("password can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
         }
-        const url = window.location.pathname;
-        const token = url.substring(15);
-        console.log("token :", token);
+        else if (!this.state.confirmPassword) {
+            toast.error("confirm password can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else if (this.state.password !== this.state.confirmPassword) {
+            toast.error("Password mismatch", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else {
+            var data = {
+                'password': this.state.password,
+                'confirmPassword': this.state.confirmPassword
+            }
+            const url = window.location.pathname;
+            const token = url.substring(15);
+            console.log("token :", token);
 
-        resetPasswordService(data, token);
+            resetPasswordService(data, token);
+        }
     }
     render() {
         const { password, confirmPassword } = this.state;
@@ -47,7 +67,7 @@ class ResetPassword extends Component {
                         <Input
                             type='password'
                             name='confirmPassword'
-                            placeholder='Enter email Id'
+                            placeholder='Enter confirm Password'
                             value={confirmPassword}
                             onChange={this.changeHandler} />
                     </Col>
@@ -57,6 +77,7 @@ class ResetPassword extends Component {
                         <Button onClick={this.submitHandler}>Submit</Button>
                     </Col>
                 </FormGroup>
+                <ToastContainer />
             </Form>
         );
     }

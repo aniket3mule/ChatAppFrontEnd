@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import Services from '../services/Services';
+import Services from '../services/UserServices';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'
 
 const userRegister = new Services().userRegister;
 
@@ -24,14 +26,48 @@ class RegisterForm extends Component {
 
     submitHandler = e => {
         e.preventDefault();
-        var data = {
-            'fname': this.state.fname,
-            'lname': this.state.lname,
-            'email': this.state.email,
-            'password': this.state.password,
-            'cpsw': this.state.cpsw
+
+        if (!this.state.fname) {
+            toast.error("first name can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
         }
-        userRegister(data);
+        else if (!this.state.lname) {
+            toast.error("last name can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else if (!this.state.email) {
+            toast.error("Email can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else if (!this.state.password) {
+            toast.error("password can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else if (!this.state.cpsw) {
+            toast.error("password can not be empty", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else if(this.state.password !== this.state.cpsw){
+            toast.error("Password and Confirm not matching", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else {
+            var data = {
+                'fname': this.state.fname,
+                'lname': this.state.lname,
+                'email': this.state.email,
+                'password': this.state.password,
+                'cpsw': this.state.cpsw
+            }
+            userRegister(data);
+        }
+
     }
     loginclick = e => {
         e.preventDefault();
@@ -114,6 +150,7 @@ class RegisterForm extends Component {
                             onClick={this.loginclick}>Sign In Instead</button>
                     </div>
                 </form>
+                <ToastContainer />
             </div>
         );
     }
