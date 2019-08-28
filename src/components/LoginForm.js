@@ -89,8 +89,8 @@ class LoginForm extends Component {
                         </div>
                     </div>
                 </form>
-                <ToastContainer />
-            </div>
+                <ToastContainer/>
+            </div>                                                                                                                                                                                                                                                                                                                                                                                                                   
         );
     }
 }
